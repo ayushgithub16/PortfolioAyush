@@ -1,30 +1,150 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
+import { db, sendContactEmail } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      // Store message in Firestore
+      const docRef = await addDoc(collection(db, "contactMessages"), {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        timestamp: serverTimestamp(),
+        status: "new",
+      });
+
+      // Send email notification using Firebase Function
+      const result = await sendContactEmail({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        messageId: docRef.id,
+      });
+
+      // Check if the function call was successful
+      if (result.data && result.data.success) {
+        setSubmitStatus({
+          type: "success",
+          message:
+            "Message sent successfully! You will receive a confirmation email shortly.",
+        });
+        setFormData({ name: "", email: "", message: "" }); // Reset form
+      } else {
+        throw new Error("Email function returned unsuccessful result");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+
+      // Handle specific Firebase function errors
+      let errorMessage = "Failed to send message. Please try again later.";
+
+      if (error.code === "functions/invalid-argument") {
+        errorMessage =
+          error.message || "Please check your input and try again.";
+      } else if (error.code === "functions/internal") {
+        errorMessage =
+          "Server error. Please try again later or contact me directly.";
+      } else if (error.code === "functions/unavailable") {
+        errorMessage =
+          "Service temporarily unavailable. Please try again later.";
+      } else if (error.code === "functions/deadline-exceeded") {
+        errorMessage = "Request timed out. Please try again.";
+      }
+
+      setSubmitStatus({
+        type: "error",
+        message: errorMessage,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <ContactWrapper>
+    <ContactWrapper id="contact">
       <h2 className="section-title">Contact</h2>
-      <div className="contact-container">
-        <div className="left-section">
+      <motion.div
+        className="contact-container"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <motion.div className="left-section" variants={cardVariants}>
           <Card />
-        </div>
-        <div className="right-section">
+        </motion.div>
+        <motion.div className="right-section" variants={cardVariants}>
           <div className="contact-info">
             <h3>Get In Touch</h3>
             <p>
               Feel free to contact me for collaborations, opportunities, or just
               to say hello!
             </p>
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+
+            {submitStatus && (
+              <div className={`status-message ${submitStatus.type}`}>
+                {submitStatus.message}
+              </div>
+            )}
+
+            <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Name</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   placeholder="Your Name"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div className="form-group">
@@ -33,8 +153,11 @@ const Contact = () => {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="your@email.com"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div className="form-group">
@@ -42,18 +165,25 @@ const Contact = () => {
                 <textarea
                   id="message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   rows="4"
                   placeholder="Type your message..."
                   required
+                  disabled={isSubmitting}
                 />
               </div>
-              <button type="submit" className="submit-btn">
-                Send Message
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </ContactWrapper>
   );
 };
@@ -82,7 +212,7 @@ const Card = () => {
             <p>Ayush Adhikari</p>
           </div>
           <div className="socialbar">
-            <a id="github" href="#">
+            <a id="github" href="/">
               <svg
                 viewBox="0 0 16 16"
                 className="bi bi-github"
@@ -95,7 +225,7 @@ const Card = () => {
               </svg>
             </a>
             &nbsp; &nbsp; &nbsp;
-            <a id="instagram" href="#">
+            <a id="instagram" href="/">
               <svg
                 viewBox="0 0 16 16"
                 className="bi bi-instagram"
@@ -108,7 +238,7 @@ const Card = () => {
               </svg>
             </a>
             &nbsp; &nbsp; &nbsp;
-            <a id="facebook" href="#">
+            <a id="facebook" href="/">
               <svg
                 viewBox="0 0 16 16"
                 className="bi bi-facebook"
@@ -121,7 +251,7 @@ const Card = () => {
               </svg>
             </a>
             &nbsp; &nbsp; &nbsp;
-            <a id="twitter" href="#">
+            <a id="twitter" href="/">
               <svg
                 viewBox="0 0 16 16"
                 className="bi bi-twitter"
@@ -310,7 +440,73 @@ const ContactWrapper = styled.div`
     background: #111827;
   }
 
+  .submit-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .status-message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .status-message.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+
+  .status-message.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+  }
+
+  /* Tablet landscape */
+  @media (max-width: 1200px) {
+    .contact-container {
+      gap: 50px;
+      max-width: 1000px;
+    }
+
+    .contact-info {
+      padding: 35px;
+    }
+  }
+
+  /* Tablet portrait */
+  @media (max-width: 900px) {
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 60px;
+    }
+
+    .contact-container {
+      gap: 40px;
+      max-width: 800px;
+    }
+
+    .contact-info {
+      padding: 30px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* Mobile landscape */
   @media (max-width: 768px) {
+    padding: 15px;
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+    }
+
     .contact-container {
       flex-direction: column;
       align-items: center;
@@ -319,22 +515,133 @@ const ContactWrapper = styled.div`
 
     .contact-info {
       padding: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+
+    .contact-info > p {
+      font-size: 1rem;
+      margin-bottom: 30px;
     }
   }
-`;
 
-const Footer = styled.footer`
-  width: 100%;
-  background: #1f2937;
-  color: white;
-  padding: 40px 20px;
-  text-align: center;
-  margin-top: auto;
+  /* Mobile portrait */
+  @media (max-width: 600px) {
+    padding: 10px;
 
-  .copyright {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    opacity: 0.8;
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    .contact-container {
+      gap: 30px;
+    }
+
+    .contact-info {
+      padding: 25px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .contact-info > p {
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      gap: 4px;
+    }
+
+    .form-group label {
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 10px 12px;
+      font-size: 0.95rem;
+    }
+
+    .submit-btn {
+      padding: 10px 0;
+      font-size: 1rem;
+    }
+  }
+
+  /* Small mobile */
+  @media (max-width: 480px) {
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+    }
+
+    .contact-container {
+      gap: 25px;
+    }
+
+    .contact-info {
+      padding: 20px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-info > p {
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      gap: 3px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+
+    .submit-btn {
+      padding: 8px 0;
+      font-size: 0.95rem;
+    }
+  }
+
+  /* Extra small mobile */
+  @media (max-width: 360px) {
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+    }
+
+    .contact-info {
+      padding: 15px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.2rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 6px 8px;
+      font-size: 0.85rem;
+    }
   }
 `;
 

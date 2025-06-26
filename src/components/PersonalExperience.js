@@ -24,7 +24,7 @@ const PersonalExperience = () => {
   };
 
   return (
-    <StyledWrapper>
+    <StyledWrapper id="experience">
       <div className="experience-container">
         <div className="section-header">
           <h2 className="section-title">{experienceData.title}</h2>

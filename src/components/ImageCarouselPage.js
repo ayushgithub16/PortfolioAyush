@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled, { css, keyframes } from "styled-components";
-
-// Import all local images from components/images folder except ayush.png
+import { motion } from "framer-motion";
 import image1 from "./images/SPS_9096.JPG";
 import image2 from "./images/SPS_9084.JPG";
 import image3 from "./images/IMG-20250118-WA0005.jpg";
@@ -56,6 +55,75 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.13,
+      delayChildren: 0.15,
+    },
+  },
+};
+
+const slideVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
+
+// Motion-enabled styled components
+const MotionCarouselTrack = motion(styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`);
+
+const MotionCarouselSlide = motion(styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: ${(p) => (p.active ? 1 : 0)};
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: ${(p) => {
+    if (p.active) return "scale(1)";
+    if (p.direction === "next") return "scale(0.95) translateX(-20px)";
+    if (p.direction === "prev") return "scale(0.95) translateX(20px)";
+    return "scale(0.9)";
+  }};
+  pointer-events: ${(p) => (p.active ? "auto" : "none")};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &:hover img {
+    transform: scale(1.02);
+  }
+`);
+
 const ImageCarouselPage = () => {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -104,7 +172,7 @@ const ImageCarouselPage = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper id="gallery">
       <h2 className="carousel-title">Images</h2>
       <CarouselWrapper>
         <ArrowButton left onClick={prevSlide} aria-label="Previous image">
@@ -119,19 +187,21 @@ const ImageCarouselPage = () => {
             <polyline points="15,18 9,12 15,6"></polyline>
           </svg>
         </ArrowButton>
-        <CarouselTrack
+        <MotionCarouselTrack
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           {images.map((img, idx) => (
-            <CarouselSlide
+            <MotionCarouselSlide
               key={img}
+              variants={slideVariants}
               active={idx === current}
               animating={animating}
               direction={direction}
-              style={{
-                zIndex: idx === current ? 2 : 1,
-              }}
+              style={{ zIndex: idx === current ? 2 : 1 }}
             >
               <img src={img} alt={`Slide ${idx + 1}`} />
               <SlideOverlay>
@@ -139,9 +209,9 @@ const ImageCarouselPage = () => {
                   {idx + 1} / {images.length}
                 </SlideNumber>
               </SlideOverlay>
-            </CarouselSlide>
+            </MotionCarouselSlide>
           ))}
-        </CarouselTrack>
+        </MotionCarouselTrack>
         <ArrowButton onClick={nextSlide} aria-label="Next image">
           <svg
             width="24"
@@ -204,51 +274,6 @@ const CarouselWrapper = styled.div`
   overflow: hidden;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const CarouselTrack = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CarouselSlide = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: ${(p) => (p.active ? 1 : 0)};
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: ${(p) => {
-    if (p.active) return "scale(1)";
-    if (p.direction === "next") return "scale(0.95) translateX(-20px)";
-    if (p.direction === "prev") return "scale(0.95) translateX(20px)";
-    return "scale(0.9)";
-  }};
-  pointer-events: ${(p) => (p.active ? "auto" : "none")};
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 28px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    user-select: none;
-    pointer-events: none;
-    transition: transform 0.3s ease;
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  &:hover img {
-    transform: scale(1.02);
-  }
 `;
 
 const SlideOverlay = styled.div`

@@ -5,7 +5,7 @@ import { Typewriter } from "react-simple-typewriter";
 
 export default function HeroSection() {
   return (
-    <section className="hero-section">
+    <section className="hero-section" id="home">
       <div className="hero-inner">
         <div className="hero-left">
           <div className="hero-intro">HI, I'M AYUSH</div>

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const skillsData = [
   {
@@ -59,10 +60,29 @@ const skillsData = [
   },
 ];
 
+// Animation variant for the whole section
+const sectionVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
+
 const Skills = () => {
   return (
-    <StyledWrapper>
-      <div className="skills-section">
+    <StyledWrapper id="skills">
+      <motion.div
+        className="skills-section"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
         <h2 className="skills-title">Skills</h2>
         <div className="skills-cards">
           {skillsData.map((group, idx) => (
@@ -81,7 +101,7 @@ const Skills = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </StyledWrapper>
   );
 };
@@ -204,16 +224,150 @@ const StyledWrapper = styled.div`
     vertical-align: middle;
   }
 
+  /* Tablet landscape */
+  @media (max-width: 1200px) {
+    .skills-cards {
+      gap: 30px;
+    }
+
+    .glass {
+      width: 300px;
+      min-height: 240px;
+      padding: 28px 20px 20px 20px;
+    }
+
+    .skills-title {
+      font-size: 3.5rem;
+      margin-bottom: 50px;
+    }
+  }
+
+  /* Tablet portrait */
   @media (max-width: 900px) {
+    padding: 40px 0;
+
+    .skills-title {
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+
     .skills-cards {
       flex-direction: column;
       align-items: center;
       gap: 32px;
     }
+
     .glass {
       margin: 0;
       width: 90vw;
       max-width: 400px;
+      transform: none;
+    }
+
+    .skills-cards:hover .glass {
+      transform: scale(1.02);
+      margin: 0;
+    }
+  }
+
+  /* Mobile landscape */
+  @media (max-width: 768px) {
+    padding: 30px 0;
+
+    .skills-title {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .glass {
+      width: 85vw;
+      max-width: 350px;
+      padding: 24px 16px 16px 16px;
+      min-height: 220px;
+    }
+
+    .group-title {
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .skills-list {
+      font-size: 0.75rem;
+      gap: 8px;
+    }
+  }
+
+  /* Mobile portrait */
+  @media (max-width: 600px) {
+    padding: 20px 0;
+
+    .skills-title {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+
+    .glass {
+      width: 90vw;
+      max-width: 320px;
+      padding: 20px 14px 14px 14px;
+      min-height: 200px;
+    }
+
+    .icon {
+      margin-bottom: 14px;
+    }
+
+    .group-title {
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .skills-list {
+      font-size: 0.7rem;
+      gap: 6px;
+    }
+  }
+
+  /* Small mobile */
+  @media (max-width: 480px) {
+    .skills-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .glass {
+      width: 95vw;
+      max-width: 300px;
+      padding: 18px 12px 12px 12px;
+      min-height: 180px;
+    }
+
+    .group-title {
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    .skills-list {
+      font-size: 0.65rem;
+      gap: 5px;
+    }
+  }
+
+  /* Extra small mobile */
+  @media (max-width: 360px) {
+    .skills-title {
+      font-size: 1.6rem;
+    }
+
+    .glass {
+      width: 98vw;
+      max-width: 280px;
+      padding: 16px 10px 10px 10px;
+      min-height: 160px;
+    }
+
+    .skills-list {
+      font-size: 0.6rem;
     }
   }
 `;

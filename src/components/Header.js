@@ -23,15 +23,65 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    closeMenu();
+  };
+
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""} dark-bg`}>
       <div className="header-container">
         <div className="logo">Logo</div>
         <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
-          <a href="#home">Home</a>
-          <a href="#projects">Projects</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contacts</a>
+          <a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("home");
+            }}
+          >
+            Home
+          </a>
+          <a
+            href="#skills"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("skills");
+            }}
+          >
+            Skills
+          </a>
+          <a
+            href="#experience"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("experience");
+            }}
+          >
+            Experience
+          </a>
+          <a
+            href="#achievements"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("achievements");
+            }}
+          >
+            Achievements
+          </a>
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("contact");
+            }}
+          >
+            Contact
+          </a>
+
           <span className="divider" />
           <a href="/" className="icon-link" aria-label="Instagram">
             <FiInstagram />

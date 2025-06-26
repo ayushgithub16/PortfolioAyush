@@ -9,19 +9,36 @@ import ExperienceCard from "./components/ExperienceCard";
 import ImageCarouselPage from "./components/ImageCarouselPage";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import PageTransition from "./components/PageTransition";
 
 function App() {
   return (
     <>
       <Header />
-      <HeroSection />
-      <Education />
-      <Skills />
-      <PersonalExperience />
-      <LeadershipEngagement />
-      <ExperienceCard />
-      <ImageCarouselPage />
-      <Contact />
+      <PageTransition>
+        <HeroSection />
+      </PageTransition>
+      <PageTransition>
+        <Education />
+      </PageTransition>
+      <PageTransition>
+        <Skills />
+      </PageTransition>
+      <PageTransition>
+        <PersonalExperience />
+      </PageTransition>
+      <PageTransition>
+        <LeadershipEngagement />
+      </PageTransition>
+      <PageTransition>
+        <ExperienceCard />
+      </PageTransition>
+      <PageTransition>
+        <ImageCarouselPage />
+      </PageTransition>
+      <PageTransition>
+        <Contact />
+      </PageTransition>
       <Footer />
     </>
   );
