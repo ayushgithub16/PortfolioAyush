@@ -5,7 +5,7 @@ import Education from "./components/Education";
 import Skills from "./components/Skills";
 import PersonalExperience from "./components/PersonalExperience";
 import LeadershipEngagement from "./components/LeadershipEngagement";
-import ExperienceCards from "./components/ExperienceCards";
+import ExperienceCard from "./components/ExperienceCard";
 import ImageCarouselPage from "./components/ImageCarouselPage";
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <Skills />
       <PersonalExperience />
       <LeadershipEngagement />
-      <ExperienceCards />
+      <ExperienceCard />
       <ImageCarouselPage />
     </>
   );

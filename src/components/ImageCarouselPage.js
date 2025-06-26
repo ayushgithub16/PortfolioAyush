@@ -235,11 +235,15 @@ const CarouselSlide = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     border-radius: 28px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     user-select: none;
     pointer-events: none;
     transition: transform 0.3s ease;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
   }
 
   &:hover img {
