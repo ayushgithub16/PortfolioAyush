@@ -7,6 +7,8 @@ import PersonalExperience from "./components/PersonalExperience";
 import LeadershipEngagement from "./components/LeadershipEngagement";
 import ExperienceCard from "./components/ExperienceCard";
 import ImageCarouselPage from "./components/ImageCarouselPage";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
       <LeadershipEngagement />
       <ExperienceCard />
       <ImageCarouselPage />
+      <Contact />
+      <Footer />
     </>
   );
 }
