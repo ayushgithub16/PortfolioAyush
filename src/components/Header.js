@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-import { FiInstagram, FiTwitter, FiYoutube, FiFacebook } from "react-icons/fi";
+import { FiInstagram, FiYoutube, FiFacebook } from "react-icons/fi";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
