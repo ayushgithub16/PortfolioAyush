@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import image1 from "./images/SPS_9096.JPG";
@@ -94,15 +94,15 @@ const MotionCarouselSlide = motion(styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: ${(p) => (p.active ? 1 : 0)};
+  opacity: ${(props) => (props.active ? 1 : 0)};
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: ${(p) => {
-    if (p.active) return "scale(1)";
-    if (p.direction === "next") return "scale(0.95) translateX(-20px)";
-    if (p.direction === "prev") return "scale(0.95) translateX(20px)";
+  transform: ${(props) => {
+    if (props.active) return "scale(1)";
+    if (props.direction === "next") return "scale(0.95) translateX(-20px)";
+    if (props.direction === "prev") return "scale(0.95) translateX(20px)";
     return "scale(0.9)";
   }};
-  pointer-events: ${(p) => (p.active ? "auto" : "none")};
+  pointer-events: ${(props) => (props.active ? "auto" : "none")};
 
   img {
     width: 100%;
@@ -128,6 +128,7 @@ const ImageCarouselPage = () => {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState(null);
+  const [imageError, setImageError] = useState(false);
   const timeoutRef = useRef(null);
 
   const nextSlide = () => {
@@ -153,9 +154,13 @@ const ImageCarouselPage = () => {
   };
 
   // Auto-play
-  React.useEffect(() => {
+  useEffect(() => {
     timeoutRef.current = setTimeout(nextSlide, 5000);
-    return () => clearTimeout(timeoutRef.current);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [current]);
 
   // Touch support
@@ -169,6 +174,14 @@ const ImageCarouselPage = () => {
     if (delta > 50) prevSlide();
     if (delta < -50) nextSlide();
     touchStartX.current = null;
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    setImageError(false);
   };
 
   return (
@@ -203,7 +216,30 @@ const ImageCarouselPage = () => {
               direction={direction}
               style={{ zIndex: idx === current ? 2 : 1 }}
             >
-              <img src={img} alt={`Slide ${idx + 1}`} />
+              <img
+                src={img}
+                alt={`Slide ${idx + 1}`}
+                onError={handleImageError}
+                onLoad={handleImageLoad}
+              />
+              {imageError && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    color: "white",
+                    textAlign: "center",
+                    background: "rgba(0,0,0,0.7)",
+                    padding: "20px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <p>Image failed to load</p>
+                  <p>Slide {idx + 1}</p>
+                </div>
+              )}
               <SlideOverlay>
                 <SlideNumber>
                   {idx + 1} / {images.length}
@@ -297,7 +333,7 @@ const SlideNumber = styled.span`
 const ArrowButton = styled.button`
   position: absolute;
   top: 50%;
-  ${(p) => (p.left ? "left: 20px;" : "right: 20px;")}
+  ${(props) => (props.left ? "left: 20px;" : "right: 20px;")}
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
@@ -341,19 +377,21 @@ const Dot = styled.button`
   height: 12px;
   border-radius: 50%;
   border: none;
-  background: ${(p) => (p.active ? "#ffffff" : "rgba(255, 255, 255, 0.3)")};
-  box-shadow: ${(p) =>
-    p.active ? "0 0 20px rgba(255, 255, 255, 0.5)" : "none"};
+  background: ${(props) =>
+    props.active ? "#ffffff" : "rgba(255, 255, 255, 0.3)"};
+  box-shadow: ${(props) =>
+    props.active ? "0 0 20px rgba(255, 255, 255, 0.5)" : "none"};
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background: ${(p) => (p.active ? "#ffffff" : "rgba(255, 255, 255, 0.5)")};
+    background: ${(props) =>
+      props.active ? "#ffffff" : "rgba(255, 255, 255, 0.5)"};
     transform: scale(1.2);
   }
 
-  ${(p) =>
-    p.active &&
+  ${(props) =>
+    props.active &&
     css`
       animation: ${pulse} 2s infinite;
     `}
