@@ -23,6 +23,12 @@
   font-weight: 700;
   color: #fff;
   letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  display: block;
 }
 
 .nav {
@@ -74,8 +80,11 @@
 .icon-link[aria-label="Instagram"]:hover {
   color: #e1306c;
 }
-.icon-link[aria-label="Twitter"]:hover {
+.icon-link[aria-label="Facebook"]:hover {
   color: #1da1f2;
+}
+.icon-link[aria-label="LinkedIn"]:hover {
+  color: #1a24d9;
 }
 
 /* Mobile menu button */
@@ -129,8 +138,17 @@
     height: 70px;
   }
 
-  .logo {
-    font-size: 1.3rem;
+  .logo-text {
+    display: none;
+  }
+
+  .logo::before {
+    content: "AA";
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.02em;
   }
 
   .nav {
@@ -185,8 +203,8 @@
     height: 65px;
   }
 
-  .logo {
-    font-size: 1.2rem;
+  .logo::before {
+    font-size: 1.1rem;
   }
 
   .nav {
@@ -212,8 +230,8 @@
     padding: 0 12px;
   }
 
-  .logo {
-    font-size: 1.1rem;
+  .logo::before {
+    font-size: 1rem;
   }
 
   .nav {

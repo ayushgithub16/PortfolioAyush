@@ -15,6 +15,16 @@ const Education = () => {
     },
     {
       id: 2,
+      institution: "Stanford University",
+      degree: "Learner: Code in Place 2025",
+      period: "2025",
+      gpa: "Online Course",
+      status: "Completed",
+      type: "course",
+      year: "2025",
+    },
+    {
+      id: 3,
       institution: "SOS Hermann Gmeiner Secondary School",
       degree: "High School Diploma, Science",
       period: "2021 – 2023",
@@ -24,7 +34,7 @@ const Education = () => {
       year: "2023",
     },
     {
-      id: 3,
+      id: 4,
       institution: "KEF Secondary School, Bagar, Kaski",
       degree: "Completed Grade 10",
       period: "2012 – 2020",

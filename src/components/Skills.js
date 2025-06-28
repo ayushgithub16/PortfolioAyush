@@ -25,7 +25,7 @@ const skillsData = [
     title: "Leadership & Management",
     items: [
       "Team Leadership & Board Management",
-      "Event Planning & Coordination (large-scale events with 10,000+ attendees)",
+      "Event Planning & Coordination ",
       "Project Management & Financial Reporting",
       "Community Outreach & Educational Program Development",
     ],
@@ -45,7 +45,7 @@ const skillsData = [
     items: [
       "Public Speaking & Workshop Facilitation",
       "Cross-cultural Communication",
-      "Networking with Stakeholders & Partners",
+      "Community Engagement & Outreach",
     ],
     icon: (
       <svg

@@ -2,7 +2,7 @@
   "name": "myapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ayushgithub16.github.io/PortfolioWebsite",
+  "homepage": "https://ayushgithub16.github.io/PortfolioAyush",
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@react-three/drei": "^10.3.0",

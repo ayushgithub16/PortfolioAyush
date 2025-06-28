@@ -128,7 +128,8 @@ const ImageCarouselPage = () => {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState(null);
-  const [imageError, setImageError] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
+  const [imageLoading, setImageLoading] = useState({});
   const timeoutRef = useRef(null);
 
   const nextSlide = () => {
@@ -176,12 +177,18 @@ const ImageCarouselPage = () => {
     touchStartX.current = null;
   };
 
-  const handleImageError = () => {
-    setImageError(true);
+  const handleImageError = (idx) => {
+    setImageErrors((prev) => ({ ...prev, [idx]: true }));
+    setImageLoading((prev) => ({ ...prev, [idx]: false }));
   };
 
-  const handleImageLoad = () => {
-    setImageError(false);
+  const handleImageLoad = (idx) => {
+    setImageErrors((prev) => ({ ...prev, [idx]: false }));
+    setImageLoading((prev) => ({ ...prev, [idx]: false }));
+  };
+
+  const handleImageStartLoad = (idx) => {
+    setImageLoading((prev) => ({ ...prev, [idx]: true }));
   };
 
   return (
@@ -219,10 +226,11 @@ const ImageCarouselPage = () => {
               <img
                 src={img}
                 alt={`Slide ${idx + 1}`}
-                onError={handleImageError}
-                onLoad={handleImageLoad}
+                onError={() => handleImageError(idx)}
+                onLoad={() => handleImageLoad(idx)}
+                onLoadStart={() => handleImageStartLoad(idx)}
               />
-              {imageError && (
+              {imageLoading[idx] && (
                 <div
                   style={{
                     position: "absolute",
@@ -231,13 +239,48 @@ const ImageCarouselPage = () => {
                     transform: "translate(-50%, -50%)",
                     color: "white",
                     textAlign: "center",
-                    background: "rgba(0,0,0,0.7)",
+                    background: "rgba(0,0,0,0.8)",
                     padding: "20px",
                     borderRadius: "10px",
+                    zIndex: 10,
                   }}
                 >
-                  <p>Image failed to load</p>
-                  <p>Slide {idx + 1}</p>
+                  <div style={{ marginBottom: "10px" }}>Loading...</div>
+                  <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>
+                    Slide {idx + 1} of {images.length}
+                  </div>
+                </div>
+              )}
+              {imageErrors[idx] && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    color: "white",
+                    textAlign: "center",
+                    background: "rgba(0,0,0,0.8)",
+                    padding: "20px",
+                    borderRadius: "10px",
+                    zIndex: 10,
+                  }}
+                >
+                  <div style={{ marginBottom: "10px" }}>
+                    ⚠️ Image failed to load
+                  </div>
+                  <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>
+                    Slide {idx + 1} of {images.length}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      opacity: 0.7,
+                      marginTop: "5px",
+                    }}
+                  >
+                    File may be too large
+                  </div>
                 </div>
               )}
               <SlideOverlay>

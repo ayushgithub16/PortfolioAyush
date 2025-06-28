@@ -13,7 +13,7 @@ export default function HeroSection() {
             I'M A<br />
             <span className="hero-typewriter">
               <Typewriter
-                words={["WEB DESIGNER", "DEVELOPER", "LEADER"]}
+                words={["WEB DESIGNER", "DEVELOPER", "LEADER", "AI ENTHUSIAST"]}
                 loop={0}
                 cursor
                 cursorStyle="|"

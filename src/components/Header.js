@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-import { FiInstagram, FiYoutube, FiFacebook } from "react-icons/fi";
+import { FiInstagram, FiLinkedin, FiFacebook } from "react-icons/fi";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +34,9 @@ export default function Header() {
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""} dark-bg`}>
       <div className="header-container">
-        <div className="logo">Logo</div>
+        <div className="logo">
+          <span className="logo-text">Ayush Adhikari</span>
+        </div>
         <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
           <a
             href="#home"
@@ -87,18 +89,18 @@ export default function Header() {
             <FiInstagram />
           </a>
           <a
-            href="https://www.youtube.com/@learnwithus2282"
+            href="https://www.linkedin.com/in/ayushlinked/"
             className="icon-link"
-            aria-label="Youtube"
+            aria-label="LinkedIn"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FiYoutube />
+            <FiLinkedin />
           </a>
           <a
             href="https://www.facebook.com/ayush.adhikari.58367/friends"
             className="icon-link"
-            aria-label="Facebok"
+            aria-label="Facebook"
             target="_blank"
             rel="noopener noreferrer"
           >

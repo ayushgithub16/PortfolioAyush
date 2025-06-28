@@ -24,6 +24,7 @@ const FooterWrapper = styled.footer`
     margin: 0;
     opacity: 0.8;
     letter-spacing: 0.01em;
+    color: #fff;
   }
 `;
 

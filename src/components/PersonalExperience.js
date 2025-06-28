@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const PersonalExperience = () => {
+  const [showMore, setShowMore] = useState(false);
+
   const experienceData = {
     title: "Professional Experience",
     position: "Tech Intern – L.A & Associates, Chartered Accountants",
@@ -23,6 +25,10 @@ const PersonalExperience = () => {
     ),
   };
 
+  const handleMoreClick = () => {
+    setShowMore(!showMore);
+  };
+
   return (
     <StyledWrapper id="experience">
       <div className="experience-container">
@@ -31,8 +37,8 @@ const PersonalExperience = () => {
           <div className="section-subtitle">My Work Journey</div>
         </div>
 
-        <div className="content-wrapper">
-          <div className="experience-card">
+        <div className="content-wrapper-row">
+          <div className={`experience-card${showMore ? " expanded" : ""}`}>
             <div className="experience-header">
               <div className="experience-icon">{experienceData.icon}</div>
               <div className="experience-info">
@@ -40,22 +46,23 @@ const PersonalExperience = () => {
                 <p className="position-duration">{experienceData.duration}</p>
               </div>
             </div>
-
-            <div className="experience-achievements">
-              <h4 className="achievements-title">Key Achievements:</h4>
+            <button
+              className={`more-button${showMore ? " active" : ""}`}
+              onClick={handleMoreClick}
+            >
+              {showMore ? "Show Less" : "More"}
+            </button>
+          </div>
+          {showMore && (
+            <div className="experience-achievements achievements-panel slide-in">
+              <div className="achievements-title">Key Achievements</div>
               <ul className="achievements-list">
-                {experienceData.achievements.map((achievement, i) => (
-                  <li key={i}>{achievement}</li>
+                {experienceData.achievements.map((ach, idx) => (
+                  <li key={idx}>{ach}</li>
                 ))}
               </ul>
             </div>
-          </div>
-
-          <div className="image-space">
-            <div className="image-placeholder">
-              <span>Add your image here</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </StyledWrapper>
@@ -99,12 +106,15 @@ const StyledWrapper = styled.div`
     font-weight: 400;
   }
 
-  .content-wrapper {
+  .content-wrapper-row {
     display: flex;
-    align-items: flex-start;
-    gap: 60px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
     width: 100%;
     max-width: 1200px;
+    gap: 40px;
+    position: relative;
   }
 
   .experience-card {
@@ -115,10 +125,14 @@ const StyledWrapper = styled.div`
     width: 100%;
     max-width: 500px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
+    min-width: 320px;
+    max-width: 500px;
+    flex: 1 1 350px;
+    z-index: 2;
   }
 
   .experience-card::before {
@@ -261,7 +275,141 @@ const StyledWrapper = styled.div`
     font-weight: 500;
   }
 
+  .sidebar-section {
+    flex-shrink: 0;
+    width: 350px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .content-wrapper.expanded {
+    flex-direction: row-reverse;
+  }
+
+  .slide-left {
+    animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .more-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .more-button {
+    display: block;
+    margin: 0 auto 0 0;
+    margin-top: 12px;
+    padding: 10px 24px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  .more-button.active,
+  .more-button:hover {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.12);
+  }
+
+  .fade-in {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .experience-card.expanded {
+    box-shadow: 0 24px 48px rgba(59, 130, 246, 0.15),
+      0 1.5px 6px rgba(0, 0, 0, 0.04);
+    border-color: #3b82f6;
+    transform: scale(1.03) translateY(-10px);
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  }
+
+  @keyframes slideInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .achievements-panel {
+    background: #f9fafb;
+    border-radius: 20px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.08);
+    padding: 32px 28px;
+    min-width: 320px;
+    max-width: 400px;
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 0;
+    opacity: 1;
+    z-index: 1;
+    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .slide-in {
+    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   /* Responsive Design */
+  @media (max-width: 1200px) {
+    .content-wrapper {
+      gap: 40px;
+    }
+
+    .sidebar-section {
+      width: 320px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .content-wrapper-row {
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+    }
+    .achievements-panel {
+      min-width: 0;
+      max-width: 100%;
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
   @media (max-width: 768px) {
     .experience-container {
       padding: 60px 20px;
@@ -272,7 +420,7 @@ const StyledWrapper = styled.div`
     }
 
     .content-wrapper {
-      flex-direction: column;
+      gap: 30px;
     }
 
     .experience-card {
@@ -298,8 +446,9 @@ const StyledWrapper = styled.div`
       font-size: 1rem;
     }
 
-    .image-space {
-      margin-top: 40px;
+    .more-button {
+      padding: 10px 25px;
+      font-size: 0.9rem;
     }
   }
 
@@ -316,8 +465,9 @@ const StyledWrapper = styled.div`
       padding: 12px 16px;
     }
 
-    .image-space {
-      margin-top: 30px;
+    .more-button {
+      padding: 8px 20px;
+      font-size: 0.85rem;
     }
   }
 `;
