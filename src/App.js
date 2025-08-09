@@ -14,6 +14,7 @@ import PageTransition from "./components/PageTransition";
 import BlogPage from "./Pages/BlogPage";
 import BlogDetailPage from "./Pages/BlogDetailPage";
 import BlogAdminPage from "./Pages/BlogAdminPage";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Home page component
 function HomePage() {
@@ -49,16 +50,18 @@ function HomePage() {
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:id" element={<BlogDetailPage />} />
-        <Route path="/admin/blog" element={<BlogAdminPage />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/admin/blog" element={<BlogAdminPage />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </ErrorBoundary>
   );
 }
 
