@@ -1,0 +1,204 @@
+/* Rich Text Editor Styles */
+.rich-text-editor {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.rich-text-editor .tox {
+  border-radius: 8px !important;
+  border: 2px solid #e1e5e9 !important;
+  transition: all 0.3s ease !important;
+}
+
+.rich-text-editor .tox:focus-within {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+.rich-text-editor .tox-toolbar {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e1e5e9 !important;
+  padding: 8px 12px !important;
+}
+
+.rich-text-editor .tox-toolbar-overlord {
+  background: #f8fafc !important;
+}
+
+.rich-text-editor .tox-toolbar__group {
+  border-color: #d1d5db !important;
+}
+
+.rich-text-editor .tox-tbtn {
+  color: #374151 !important;
+  border-radius: 4px !important;
+  margin: 1px !important;
+}
+
+.rich-text-editor .tox-tbtn:hover {
+  background: #e2e8f0 !important;
+  color: #1a1a1a !important;
+}
+
+.rich-text-editor .tox-tbtn--enabled {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+.rich-text-editor .tox-tbtn--enabled:hover {
+  background: #2563eb !important;
+  color: white !important;
+}
+
+.rich-text-editor .tox-edit-area {
+  border: none !important;
+}
+
+.rich-text-editor .tox-edit-area__iframe {
+  background: white !important;
+}
+
+.rich-text-editor .tox-statusbar {
+  background: #f8fafc !important;
+  border-top: 1px solid #e1e5e9 !important;
+  color: #6b7280 !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+}
+
+.rich-text-editor .tox-statusbar__text-container {
+  color: #6b7280 !important;
+}
+
+.rich-text-editor .tox-button {
+  color: #374151 !important;
+  border-radius: 4px !important;
+}
+
+.rich-text-editor .tox-button:hover {
+  background: #e2e8f0 !important;
+  color: #1a1a1a !important;
+}
+
+.rich-text-editor .tox-collection--list .tox-collection__item {
+  color: #374151 !important;
+}
+
+.rich-text-editor .tox-collection--list .tox-collection__item:hover {
+  background: #f1f5f9 !important;
+}
+
+.rich-text-editor .tox-collection--list .tox-collection__item--enabled {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Loading state */
+.rich-text-editor-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  background: #f8fafc;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.rich-text-editor-loading::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e1e5e9;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 12px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .rich-text-editor .tox-toolbar {
+    flex-wrap: wrap !important;
+  }
+
+  .rich-text-editor .tox-toolbar__group {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Custom image styles in editor */
+.rich-text-editor .mce-content-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom link styles in editor */
+.rich-text-editor .mce-content-body a {
+  color: #3b82f6;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.rich-text-editor .mce-content-body a:hover {
+  border-bottom-color: #3b82f6;
+}
+
+/* Code block styling */
+.rich-text-editor .mce-content-body pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: "SF Mono", Monaco, Inconsolata, "Roboto Mono", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Blockquote styling */
+.rich-text-editor .mce-content-body blockquote {
+  border-left: 4px solid #3b82f6;
+  background: #f8fafc;
+  margin: 16px 0;
+  padding: 16px 20px;
+  font-style: italic;
+  color: #4b5563;
+}
+
+/* Table styling */
+.rich-text-editor .mce-content-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rich-text-editor .mce-content-body th,
+.rich-text-editor .mce-content-body td {
+  border: 1px solid #e1e5e9;
+  padding: 12px;
+  text-align: left;
+}
+
+.rich-text-editor .mce-content-body th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+}

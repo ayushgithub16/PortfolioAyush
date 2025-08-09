@@ -142,7 +142,7 @@ const BlogDetail = () => {
             <div
               className="blog-detail-content"
               dangerouslySetInnerHTML={{
-                __html: blog.content.replace(/\n/g, "<br />"),
+                __html: blog.content,
               }}
             />
           </div>

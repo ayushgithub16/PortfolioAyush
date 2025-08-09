@@ -1,9 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import heroImg from "./images/ayush.png";
 import { Typewriter } from "react-simple-typewriter";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleBlogNavigation = () => {
+    navigate("/blog");
+  };
   return (
     <section className="hero-section" id="home">
       <div className="hero-inner">
@@ -29,9 +35,9 @@ export default function HeroSection() {
             learning new skills, leading initiatives, and creating opportunities
             that empower others.
           </p>
-          <a href="#projects" className="hero-btn">
-            VIEW MY PROJECTS
-          </a>
+          <button className="hero-btn" onClick={handleBlogNavigation}>
+            VIEW MY BLOGS
+          </button>
         </div>
         <div className="hero-right">
           <img src={heroImg} alt="Ayush" className="hero-img" />

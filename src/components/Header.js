@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { FiInstagram, FiLinkedin, FiFacebook } from "react-icons/fi";
 
@@ -7,7 +7,6 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,42 +26,34 @@ export default function Header() {
   };
 
   const scrollToSection = (sectionId) => {
-    // If we're not on the home page, navigate to home first
-    if (location.pathname !== "/") {
-      navigate("/");
-      // Use setTimeout to wait for navigation to complete
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
-    } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
     }
     closeMenu();
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
+  const handleHomeNavigation = () => {
+    navigate("/");
     closeMenu();
   };
 
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""} dark-bg`}>
       <div className="header-container">
-        <div className="logo">
+        <div
+          className="logo"
+          onClick={handleHomeNavigation}
+          style={{ cursor: "pointer" }}
+        >
           <span className="logo-text">Ayush Adhikari</span>
         </div>
         <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
           <a
-            href="#home"
+            href="/"
             onClick={(e) => {
               e.preventDefault();
-              scrollToSection("home");
+              handleHomeNavigation();
             }}
           >
             Home
@@ -95,15 +86,6 @@ export default function Header() {
             Achievements
           </a>
           <a
-            href="/blog"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavigation("/blog");
-            }}
-          >
-            Blog
-          </a>
-          <a
             href="#contact"
             onClick={(e) => {
               e.preventDefault();
@@ -112,9 +94,18 @@ export default function Header() {
           >
             Contact
           </a>
+          <a href="/blog" onClick={closeMenu}>
+            Blog
+          </a>
 
           <span className="divider" />
-          <a href="/" className="icon-link" aria-label="Instagram">
+          <a
+            href="https://www.instagram.com/_ayush.adhikari_"
+            className="icon-link"
+            aria-label="Instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FiInstagram />
           </a>
           <a

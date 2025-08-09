@@ -21,6 +21,8 @@ import {
   FiX,
   FiUser,
 } from "react-icons/fi";
+import RichTextEditor from "./RichTextEditor";
+import { cleanHtmlContent } from "../services/imageService";
 import "./BlogAdmin.css";
 
 const BlogAdmin = () => {
@@ -80,12 +82,19 @@ const BlogAdmin = () => {
   };
 
   const handleEdit = (blog) => {
+    console.log("Editing blog:", {
+      id: blog.id,
+      title: blog.title,
+      hasContent: !!blog.content,
+      contentLength: blog.content?.length || 0,
+    });
+
     setEditingBlog(blog.id);
     setFormData({
-      title: blog.title,
-      content: blog.content,
-      category: blog.category,
-      author: blog.author,
+      title: blog.title || "",
+      content: blog.content || "",
+      category: blog.category || "",
+      author: blog.author || "Ayush",
     });
     // Scroll to top of form when editing
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -134,17 +143,57 @@ const BlogAdmin = () => {
     setError("");
     setSuccess("");
 
+    console.log("Form submission started:", {
+      title: formData.title,
+      category: formData.category,
+      contentLength: formData.content?.length || 0,
+      editingBlog,
+    });
+
     try {
+      // Validate required fields
+      if (!formData.title?.trim()) {
+        setError("Title is required");
+        return;
+      }
+      if (!formData.category?.trim()) {
+        setError("Category is required");
+        return;
+      }
+      if (!formData.content?.trim()) {
+        setError("Content is required");
+        return;
+      }
+
       const blogData = {
-        ...formData,
-        views: 0,
-        createdAt: editingBlog ? undefined : new Date(),
+        title: formData.title.trim(),
+        category: formData.category.trim(),
+        author: formData.author?.trim() || "Ayush",
+        content: cleanHtmlContent(formData.content),
       };
 
+      // Only add views and createdAt for new blogs
+      if (!editingBlog) {
+        blogData.views = 0;
+        blogData.createdAt = new Date();
+      } else {
+        // For updates, don't include createdAt or views if they might conflict
+        console.log("Updating existing blog, preserving original metadata");
+      }
+
+      console.log("Blog data prepared:", {
+        blogId: editingBlog,
+        isEditing: !!editingBlog,
+        dataKeys: Object.keys(blogData),
+        content: blogData.content?.substring(0, 100) + "...", // Log first 100 chars
+      });
+
       if (editingBlog) {
+        console.log("Attempting to update blog with ID:", editingBlog);
         await updateBlog(editingBlog, blogData);
         setSuccess("Blog post updated successfully!");
       } else {
+        console.log("Creating new blog");
         await createBlog(blogData);
         setSuccess("Blog post created successfully!");
       }
@@ -159,6 +208,11 @@ const BlogAdmin = () => {
       }, 2000);
     } catch (error) {
       console.error("Error saving blog:", error);
+      console.error("Error details:", {
+        message: error.message,
+        code: error.code,
+        stack: error.stack,
+      });
       setError(
         editingBlog
           ? "Failed to update blog post. Please try again."
@@ -267,15 +321,12 @@ const BlogAdmin = () => {
 
           <div className="form-group">
             <label htmlFor="content">Content *</label>
-            <textarea
-              id="content"
-              name="content"
+            <RichTextEditor
               value={formData.content}
-              onChange={handleChange}
-              required
-              className="form-textarea content-textarea"
-              rows="20"
-              placeholder="Paste your blog content here (from Google Docs or write directly)"
+              onChange={(content) =>
+                setFormData((prev) => ({ ...prev, content }))
+              }
+              placeholder="Write your blog content here. You can paste from Google Docs, add images, format text, and more!"
             />
           </div>
 

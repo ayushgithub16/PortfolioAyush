@@ -678,3 +678,257 @@
     flex-wrap: wrap;
   }
 }
+
+/* Additional Mobile Responsive Styles */
+
+/* Large tablets */
+@media (max-width: 1024px) {
+  .blog-admin-container {
+    max-width: 800px;
+    padding: 0 30px;
+  }
+
+  .admin-title {
+    font-size: 2.8rem;
+  }
+
+  .admin-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+/* Small tablets and large phones */
+@media (max-width: 640px) {
+  .blog-admin-page {
+    padding: 20px 0 60px;
+  }
+
+  .blog-admin-container {
+    padding: 0 16px;
+  }
+
+  .blog-admin-nav {
+    margin-bottom: 30px;
+  }
+
+  .admin-back-button {
+    padding: 12px 20px;
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .blog-admin-header {
+    margin-bottom: 30px;
+  }
+
+  .admin-title {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+  }
+
+  .admin-subtitle {
+    font-size: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit-button,
+  .cancel-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blog-list {
+    margin-top: 40px;
+  }
+
+  .blog-list h3 {
+    font-size: 1.3rem;
+  }
+
+  .blog-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .blog-item {
+    padding: 16px;
+  }
+
+  .blog-item h4 {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .blog-item-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .edit-btn,
+  .delete-item-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+  .blog-admin-page {
+    padding: 15px 0 50px;
+  }
+
+  .blog-admin-container {
+    padding: 0 12px;
+  }
+
+  .admin-back-button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .blog-admin-header {
+    margin-bottom: 25px;
+  }
+
+  .admin-title {
+    font-size: 1.9rem;
+    line-height: 1.2;
+  }
+
+  .admin-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: 10px 12px;
+  }
+
+  .submit-button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .cancel-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .blog-item {
+    padding: 12px;
+  }
+
+  .blog-item h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .blog-item-stats {
+    gap: 8px;
+  }
+
+  .stat {
+    font-size: 0.8rem;
+  }
+
+  .edit-btn,
+  .delete-item-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .confirmation-modal {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .confirmation-title {
+    font-size: 1.2rem;
+  }
+
+  .confirmation-message {
+    font-size: 0.9rem;
+  }
+
+  .confirmation-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .confirm-delete-btn,
+  .cancel-delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .blog-admin-container {
+    padding: 0 8px;
+  }
+
+  .admin-title {
+    font-size: 1.7rem;
+  }
+
+  .admin-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .admin-back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 8px 10px;
+  }
+
+  .submit-button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .blog-item {
+    padding: 10px;
+  }
+
+  .blog-item h4 {
+    font-size: 0.95rem;
+  }
+
+  .edit-btn,
+  .delete-item-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
