@@ -1,7 +1,6 @@
 import React from "react";
 import PageTransition from "../components/PageTransition";
 import BlogList from "../components/BlogList";
-import Footer from "../components/Footer";
 
 // Blog page component
 function BlogPage() {
@@ -18,7 +17,6 @@ function BlogPage() {
           <BlogList />
         </div>
       </PageTransition>
-      <Footer />
     </>
   );
 }

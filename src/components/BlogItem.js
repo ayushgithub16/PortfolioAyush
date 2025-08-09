@@ -18,7 +18,7 @@ const BlogCard = styled(motion.article)`
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border-color: ${designTokens.colors.accent.primary};
+    border-color: ${designTokens.colors.primary.main};
   }
 
   &::before {
@@ -30,8 +30,8 @@ const BlogCard = styled(motion.article)`
     height: 3px;
     background: linear-gradient(
       90deg,
-      ${designTokens.colors.accent.primary},
-      ${designTokens.colors.accent.secondary}
+      ${designTokens.colors.primary.main},
+      ${designTokens.colors.secondary.main}
     );
     transform: scaleX(0);
     transition: transform 0.3s ease;
@@ -93,7 +93,7 @@ const Tag = styled.span`
   align-items: center;
   gap: 4px;
   background: rgba(99, 102, 241, 0.1);
-  color: ${designTokens.colors.accent.primary};
+  color: ${designTokens.colors.primary.main};
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -104,7 +104,7 @@ const ReadMoreButton = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: ${designTokens.colors.accent.primary};
+  color: ${designTokens.colors.primary.main};
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -114,7 +114,7 @@ const ReadMoreButton = styled.div`
   }
 
   ${BlogCard}:hover & {
-    color: ${designTokens.colors.accent.secondary};
+    color: ${designTokens.colors.secondary.main};
 
     .arrow {
       transform: translateX(5px);

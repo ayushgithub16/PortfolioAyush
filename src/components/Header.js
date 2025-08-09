@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
-import { FiInstagram, FiLinkedin, FiFacebook, FiEdit3 } from "react-icons/fi";
+import { FiInstagram, FiLinkedin, FiFacebook } from "react-icons/fi";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,8 +28,8 @@ export default function Header() {
 
   const scrollToSection = (sectionId) => {
     // If we're not on the home page, navigate to home first
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== "/") {
+      navigate("/");
       // Use setTimeout to wait for navigation to complete
       setTimeout(() => {
         const element = document.getElementById(sectionId);
@@ -100,9 +100,7 @@ export default function Header() {
               e.preventDefault();
               handleNavigation("/blog");
             }}
-            className="blog-link"
           >
-            <FiEdit3 className="blog-icon" />
             Blog
           </a>
           <a

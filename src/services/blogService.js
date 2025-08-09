@@ -1,34 +1,34 @@
-import { 
-  collection, 
-  getDocs, 
-  doc, 
-  getDoc, 
-  addDoc, 
-  updateDoc, 
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
   deleteDoc,
   query,
   orderBy,
   limit,
   where,
-  serverTimestamp
-} from 'firebase/firestore';
-import { db } from '../firebase/config';
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase/config";
 
-const BLOGS_COLLECTION = 'blogs';
+const BLOGS_COLLECTION = "blogs";
 
 // Get all blogs with pagination and filtering
 export const getBlogs = async (limitCount = 10, category = null) => {
   try {
     let blogQuery = query(
       collection(db, BLOGS_COLLECTION),
-      orderBy('createdAt', 'desc')
+      orderBy("createdAt", "desc")
     );
 
     if (category) {
       blogQuery = query(
         collection(db, BLOGS_COLLECTION),
-        where('category', '==', category),
-        orderBy('createdAt', 'desc')
+        where("category", "==", category),
+        orderBy("createdAt", "desc")
       );
     }
 
@@ -44,13 +44,13 @@ export const getBlogs = async (limitCount = 10, category = null) => {
         id: doc.id,
         ...doc.data(),
         createdAt: doc.data().createdAt?.toDate(),
-        updatedAt: doc.data().updatedAt?.toDate()
+        updatedAt: doc.data().updatedAt?.toDate(),
       });
     });
 
     return blogs;
   } catch (error) {
-    console.error('Error fetching blogs:', error);
+    console.error("Error fetching blogs:", error);
     throw error;
   }
 };
@@ -67,13 +67,13 @@ export const getBlogById = async (blogId) => {
         id: docSnap.id,
         ...data,
         createdAt: data.createdAt?.toDate(),
-        updatedAt: data.updatedAt?.toDate()
+        updatedAt: data.updatedAt?.toDate(),
       };
     } else {
-      throw new Error('Blog not found');
+      throw new Error("Blog not found");
     }
   } catch (error) {
-    console.error('Error fetching blog:', error);
+    console.error("Error fetching blog:", error);
     throw error;
   }
 };
@@ -86,13 +86,13 @@ export const createBlog = async (blogData) => {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       views: 0,
-      published: true
+      published: true,
     };
 
     const docRef = await addDoc(collection(db, BLOGS_COLLECTION), newBlog);
     return docRef.id;
   } catch (error) {
-    console.error('Error creating blog:', error);
+    console.error("Error creating blog:", error);
     throw error;
   }
 };
@@ -103,11 +103,11 @@ export const updateBlog = async (blogId, blogData) => {
     const docRef = doc(db, BLOGS_COLLECTION, blogId);
     await updateDoc(docRef, {
       ...blogData,
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
     });
     return true;
   } catch (error) {
-    console.error('Error updating blog:', error);
+    console.error("Error updating blog:", error);
     throw error;
   }
 };
@@ -119,7 +119,7 @@ export const deleteBlog = async (blogId) => {
     await deleteDoc(docRef);
     return true;
   } catch (error) {
-    console.error('Error deleting blog:', error);
+    console.error("Error deleting blog:", error);
     throw error;
   }
 };
@@ -129,15 +129,15 @@ export const incrementBlogViews = async (blogId) => {
   try {
     const docRef = doc(db, BLOGS_COLLECTION, blogId);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       const currentViews = docSnap.data().views || 0;
       await updateDoc(docRef, {
-        views: currentViews + 1
+        views: currentViews + 1,
       });
     }
   } catch (error) {
-    console.error('Error incrementing views:', error);
+    console.error("Error incrementing views:", error);
   }
 };
 
@@ -156,7 +156,7 @@ export const getBlogCategories = async () => {
 
     return Array.from(categories);
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error("Error fetching categories:", error);
     throw error;
   }
 };

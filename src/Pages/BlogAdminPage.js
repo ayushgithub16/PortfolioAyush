@@ -1,7 +1,6 @@
 import React from "react";
 import PageTransition from "../components/PageTransition";
 import BlogAdmin from "../components/BlogAdmin";
-import Footer from "../components/Footer";
 
 // Blog admin page component
 function BlogAdminPage() {
@@ -18,7 +17,6 @@ function BlogAdminPage() {
           <BlogAdmin />
         </div>
       </PageTransition>
-      <Footer />
     </>
   );
 }

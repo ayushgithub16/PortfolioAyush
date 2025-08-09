@@ -1,7 +1,6 @@
 import React from "react";
 import PageTransition from "../components/PageTransition";
 import BlogDetail from "../components/BlogDetail";
-import Footer from "../components/Footer";
 
 // Individual blog post page component
 function BlogDetailPage() {
@@ -18,7 +17,6 @@ function BlogDetailPage() {
           <BlogDetail />
         </div>
       </PageTransition>
-      <Footer />
     </>
   );
 }
