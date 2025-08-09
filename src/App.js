@@ -1,4 +1,5 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HeroSection from "./components/HeroSection";
 import Header from "./components/Header";
 import Education from "./components/Education";
@@ -10,11 +11,14 @@ import ImageCarouselPage from "./components/ImageCarouselPage";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import BlogPage from "./Pages/BlogPage";
+import BlogDetailPage from "./Pages/BlogDetailPage";
+import BlogAdminPage from "./Pages/BlogAdminPage";
 
-function App() {
+// Home page component
+function HomePage() {
   return (
     <>
-      <Header />
       <PageTransition>
         <HeroSection />
       </PageTransition>
@@ -39,8 +43,22 @@ function App() {
       <PageTransition>
         <Contact />
       </PageTransition>
-      <Footer />
     </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailPage />} />
+        <Route path="/admin/blog" element={<BlogAdminPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

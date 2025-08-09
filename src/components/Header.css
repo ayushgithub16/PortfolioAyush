@@ -56,6 +56,29 @@
   color: #e0e0e0;
 }
 
+/* Blog link specific styling */
+.blog-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  padding: 8px 16px !important;
+  border-radius: 6px;
+  color: white !important;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.blog-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  color: white !important;
+}
+
+.blog-icon {
+  font-size: 1rem;
+}
+
 .divider {
   display: inline-block;
   width: 1px;
