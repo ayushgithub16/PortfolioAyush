@@ -100,8 +100,6 @@ export const createBlog = async (blogData) => {
 // Update an existing blog post
 export const updateBlog = async (blogId, blogData) => {
   try {
-    console.log("Updating blog:", { blogId, data: blogData });
-
     const docRef = doc(db, BLOGS_COLLECTION, blogId);
 
     // Prepare update data with serverTimestamp for updatedAt
@@ -110,10 +108,7 @@ export const updateBlog = async (blogId, blogData) => {
       updatedAt: serverTimestamp(),
     };
 
-    console.log("Update data prepared:", updateData);
-
     await updateDoc(docRef, updateData);
-    console.log("Blog updated successfully");
     return true;
   } catch (error) {
     console.error("Error updating blog:", error);
